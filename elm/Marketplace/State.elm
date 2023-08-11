@@ -76,10 +76,6 @@ update msg prevModel =
                 { prevModel | now = time }
 
         Refresh ->
-            let
-                log1 =
-                    Debug.log "Calling Refresh in MarketPlace page" ""
-            in
             UpdateResult
                 prevModel
                 (PriceFetch.fetch PricesFetched)
@@ -90,9 +86,6 @@ update msg prevModel =
             case fetchResult of
                 Ok pricesAndTimestamps ->
                     let
-                        log1 =
-                            Debug.log "Retrieved currency data: " pricesAndTimestamps
-
                         newPrices : List ( Currencies.Symbol, PriceFetch.PriceData )
                         newPrices =
                             [ ( "AUD", PriceFetch.Ok pricesAndTimestamps.rates.aUD )
@@ -135,10 +128,6 @@ update msg prevModel =
                         { prevModel | prices = newPrices }
 
                 Err httpErr ->
-                    let
-                        log1 =
-                            Debug.log "httpErr: " httpErr
-                    in
                     justModelUpdate prevModel
 
         MinDaiChanged input ->

@@ -24,10 +24,6 @@ type PriceData
 
 fetch : (Result Http.Error CurrencyRatesDecoder.Root -> msg) -> Cmd msg
 fetch msgConstructor =
-    let
-        log1 =
-            Debug.log "In fetch function" ""
-    in
     Http.request
         { method = "GET"
         , headers = []

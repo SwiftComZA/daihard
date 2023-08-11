@@ -324,9 +324,6 @@ update msg prevModel =
 
                 fetchExchangeRateCmd =
                     PriceFetch.fetch PricesFetched
-
-                log1 =
-                    Debug.log "Calling Refresh in Create page" ""
             in
             UpdateResult
                 prevModel
@@ -342,9 +339,6 @@ update msg prevModel =
             case fetchResult of
                 Ok pricesAndTimestamps ->
                     let
-                        log1 =
-                            Debug.log "Retrieved currency data: " pricesAndTimestamps
-
                         newPrices : List ( Currencies.Symbol, PriceFetch.PriceData )
                         newPrices =
                             [ ( "AUD", PriceFetch.Ok pricesAndTimestamps.rates.aUD )
