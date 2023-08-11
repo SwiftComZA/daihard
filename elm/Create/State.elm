@@ -1,6 +1,5 @@
 module Create.State exposing (init, runCmdDown, subscriptions, update)
 
-import MaybeDebugLog exposing (maybeDebugLog)
 import BigInt exposing (BigInt)
 import ChainCmd exposing (ChainCmd)
 import CmdDown exposing (CmdDown)
@@ -15,6 +14,7 @@ import Currencies
 import Eth
 import Helpers.BigInt as BigIntHelpers
 import Helpers.Tuple as TupleHelpers
+import MaybeDebugLog exposing (maybeDebugLog)
 import PaymentMethods exposing (PaymentMethod)
 import PriceFetch
 import Routing
@@ -324,6 +324,9 @@ update msg prevModel =
 
                 fetchExchangeRateCmd =
                     PriceFetch.fetch PricesFetched
+
+                log1 =
+                    Debug.log "Calling Refresh in Create page" ""
             in
             UpdateResult
                 prevModel
@@ -339,9 +342,46 @@ update msg prevModel =
             case fetchResult of
                 Ok pricesAndTimestamps ->
                     let
+                        log1 =
+                            Debug.log "Retrieved currency data: " pricesAndTimestamps
+
+                        newPrices : List ( Currencies.Symbol, PriceFetch.PriceData )
                         newPrices =
-                            pricesAndTimestamps
-                                |> List.map (Tuple.mapSecond (PriceFetch.checkAgainstTime prevModel.now))
+                            [ ( "AUD", PriceFetch.Ok pricesAndTimestamps.rates.aUD )
+                            , ( "CLP", PriceFetch.Ok pricesAndTimestamps.rates.cLP )
+                            , ( "EUR", PriceFetch.Ok pricesAndTimestamps.rates.eUR )
+                            , ( "IDR", PriceFetch.Ok pricesAndTimestamps.rates.iDR )
+                            , ( "KRW", PriceFetch.Ok pricesAndTimestamps.rates.kRW )
+                            , ( "NZD", PriceFetch.Ok pricesAndTimestamps.rates.nZD )
+                            , ( "RUB", PriceFetch.Ok pricesAndTimestamps.rates.rUB )
+                            , ( "TRY", PriceFetch.Ok pricesAndTimestamps.rates.tRY )
+                            , ( "BRL", PriceFetch.Ok pricesAndTimestamps.rates.bRL )
+                            , ( "CNY", PriceFetch.Ok pricesAndTimestamps.rates.cNY )
+                            , ( "GBP", PriceFetch.Ok pricesAndTimestamps.rates.gBP )
+                            , ( "ILS", PriceFetch.Ok pricesAndTimestamps.rates.iLS )
+                            , ( "MXN", PriceFetch.Ok pricesAndTimestamps.rates.mXN )
+                            , ( "PHP", PriceFetch.Ok pricesAndTimestamps.rates.pHP )
+                            , ( "SEK", PriceFetch.Ok pricesAndTimestamps.rates.sEK )
+                            , ( "TWD", PriceFetch.Ok pricesAndTimestamps.rates.tWD )
+                            , ( "CAD", PriceFetch.Ok pricesAndTimestamps.rates.cAD )
+                            , ( "CZK", PriceFetch.Ok pricesAndTimestamps.rates.cZK )
+                            , ( "HKD", PriceFetch.Ok pricesAndTimestamps.rates.hKD )
+                            , ( "INR", PriceFetch.Ok pricesAndTimestamps.rates.iNR )
+                            , ( "MYR", PriceFetch.Ok pricesAndTimestamps.rates.mYR )
+                            , ( "PKR", PriceFetch.Ok pricesAndTimestamps.rates.pKR )
+                            , ( "SGD", PriceFetch.Ok pricesAndTimestamps.rates.sGD )
+                            , ( "USD", PriceFetch.Ok pricesAndTimestamps.rates.uSD )
+                            , ( "CHF", PriceFetch.Ok pricesAndTimestamps.rates.cHF )
+                            , ( "DKK", PriceFetch.Ok pricesAndTimestamps.rates.dKK )
+                            , ( "HUF", PriceFetch.Ok pricesAndTimestamps.rates.hUF )
+                            , ( "JPY", PriceFetch.Ok pricesAndTimestamps.rates.jPY )
+                            , ( "NOK", PriceFetch.Ok pricesAndTimestamps.rates.nOK )
+                            , ( "PLN", PriceFetch.Ok pricesAndTimestamps.rates.pLN )
+                            , ( "THB", PriceFetch.Ok pricesAndTimestamps.rates.tHB )
+                            , ( "ZAR", PriceFetch.Ok pricesAndTimestamps.rates.zAR )
+                            , ( "VND", PriceFetch.Ok pricesAndTimestamps.rates.vND )
+                            , ( "ZWL", PriceFetch.Ok pricesAndTimestamps.rates.zWL )
+                            ]
 
                         ( newModel, appCmds ) =
                             case prevModel.mode of
@@ -1485,6 +1525,6 @@ updateCurrencyTypesFromInput prevModel =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Time.every 20000 (always Refresh)
+        [ Time.every 2000000 (always Refresh)
         , Time.every 500 UpdateNow
         ]

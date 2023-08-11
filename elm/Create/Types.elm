@@ -1,6 +1,5 @@
 module Create.Types exposing (AutofillableInput(..), CurrencyType(..), Errors, Inputs, IntervalUnit(..), MarginButtonType(..), Mode(..), ModeOrTrade(..), Model, Msg(..), TradeType(..), TxChainMode(..), TxChainStatus, UpdateResult, UserInterval, buildCryptoSwapSellPaymentMethodString, cryptoSwapSellPaymentMethodPrefix, cryptoSwapSellPaymentMethodSuffix, currencySymbol, externalCurrencyPrice, getAmountIn, getAmountOut, getTradeAmount, getTradePrice, getUserInterval, initiatorRole, intervalUnitToString, justModelUpdate, marginButtonTypeToString, maybeBuildPaymentMethods, maybeUserParameters, modeToString, noErrors, tradeType, updateAmountIn, updateAmountOut, updateForeignCurrencyType, updateInType, updateOutType, updateUserInterval, userIntervalToPosix, userIntervalToString)
 
-import MaybeDebugLog exposing (maybeDebugLog)
 import BigInt exposing (BigInt)
 import ChainCmd exposing (ChainCmd)
 import CmdUp exposing (CmdUp)
@@ -9,8 +8,10 @@ import Contracts.Generated.DAIHardFactory as DHF
 import Contracts.Types as CTypes
 import Currencies
 import Eth.Types exposing (Address, TxHash, TxReceipt)
+import Helpers.Decoders.CurrencyRatesDecoder as CurrencyRatesDecoder
 import Helpers.Tuple as TupleHelpers
 import Http
+import MaybeDebugLog exposing (maybeDebugLog)
 import PaymentMethods exposing (PaymentMethod)
 import PriceFetch
 import Time
@@ -61,7 +62,7 @@ type TxChainMode
 type Msg
     = Refresh
     | UpdateNow Time.Posix
-    | PricesFetched (Result Http.Error (List ( Currencies.Symbol, PriceFetch.PriceAndTimestamp )))
+    | PricesFetched (Result Http.Error CurrencyRatesDecoder.Root)
     | ChangeMode Mode
     | SwapClicked
     | AmountInChanged String

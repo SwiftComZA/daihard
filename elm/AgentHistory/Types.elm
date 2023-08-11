@@ -12,6 +12,7 @@ import Eth.Net
 import Eth.Sentry.Event as EventSentry exposing (EventSentry)
 import Eth.Types exposing (Address)
 import Filters.Types as Filters
+import Helpers.Decoders.CurrencyRatesDecoder as CurrencyRatesDecoder
 import Helpers.Eth as EthHelpers
 import Http
 import Json.Decode
@@ -43,7 +44,7 @@ type Msg
     | TradeTableMsg TradeTable.Msg
     | UpdateNow Time.Posix
     | Refresh
-    | PricesFetched (Result Http.Error (List ( Currencies.Symbol, PriceFetch.PriceAndTimestamp )))
+    | PricesFetched (Result Http.Error CurrencyRatesDecoder.Root)
     | NoOp
 
 

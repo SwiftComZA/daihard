@@ -14,10 +14,10 @@ httpProviderForFactory : FactoryType -> HttpProvider
 httpProviderForFactory factoryType =
     case factoryType of
         Token EthDai ->
-            "https://mainnet.infura.io/v3/e3eef0e2435349bf9164e6f465bd7cf9"
+            "https://mainnet.infura.io/v3/715f42b35f9a4792a8050f284e61bab5"
 
         Native Eth ->
-            "https://mainnet.infura.io/v3/e3eef0e2435349bf9164e6f465bd7cf9"
+            "https://mainnet.infura.io/v3/715f42b35f9a4792a8050f284e61bab5"
 
         Token KovanDai ->
             "https://kovan.infura.io/v3/e3eef0e2435349bf9164e6f465bd7cf9"
@@ -26,7 +26,7 @@ httpProviderForFactory factoryType =
             "https://kovan.infura.io/v3/e3eef0e2435349bf9164e6f465bd7cf9"
 
         Native XDai ->
-            "https://dai.poa.network"
+            "https://rpc.gnosischain.com/"
 
 
 addressIfNot0x0 : Address -> Maybe Address

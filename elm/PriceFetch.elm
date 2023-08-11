@@ -3,6 +3,7 @@ module PriceFetch exposing (PriceAndTimestamp, PriceData(..), checkAgainstTime, 
 import CommonTypes exposing (..)
 import Currencies
 import Dict exposing (Dict)
+import Helpers.Decoders.CurrencyRatesDecoder as CurrencyRatesDecoder
 import Helpers.Time as TimeHelpers
 import Http
 import Iso8601
@@ -21,14 +22,18 @@ type PriceData
     | Outdated
 
 
-fetch : (Result Http.Error (List ( Currencies.Symbol, PriceAndTimestamp )) -> msg) -> Cmd msg
+fetch : (Result Http.Error CurrencyRatesDecoder.Root -> msg) -> Cmd msg
 fetch msgConstructor =
+    let
+        log1 =
+            Debug.log "In fetch function" ""
+    in
     Http.request
         { method = "GET"
         , headers = []
-        , url = "https://daihard.exchange/prices.json"
+        , url = "https://openexchangerates.org/api/latest.json?app_id=e89c9afecc7d4d268f3fe19d83a10414"
         , body = Http.emptyBody
-        , expect = Http.expectJson msgConstructor responseDecoder
+        , expect = Http.expectJson msgConstructor CurrencyRatesDecoder.rootDecoder
         , timeout = Nothing
         , tracker = Nothing
         }

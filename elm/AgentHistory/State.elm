@@ -128,12 +128,15 @@ update msg prevModel =
             case fetchResult of
                 Ok pricesAndTimestamps ->
                     let
-                        newPrices =
-                            pricesAndTimestamps
-                                |> List.map (Tuple.mapSecond (PriceFetch.checkAgainstTime prevModel.now))
+                        -- newPrices =
+                        --     pricesAndTimestamps
+                        --         |> List.map (Tuple.mapSecond (PriceFetch.checkAgainstTime prevModel.now))
+                        log1 =
+                            Debug.log "Currency data: " fetchResult
                     in
-                    justModelUpdate
-                        { prevModel | prices = newPrices }
+                    -- justModelUpdate
+                    --     { prevModel | prices = newPrices }
+                    justModelUpdate prevModel
 
                 Err httpErr ->
                     justModelUpdate prevModel
